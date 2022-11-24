@@ -5,6 +5,8 @@ VisualStudioVersion = 17.4.33110.190
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StockMarket.Tests", "StockMarket.Tests\StockMarket.Tests.csproj", "{AE2EE3EA-1AE3-4199-A84A-0D541AEE6273}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StockMarket.Domain", "StockMarket.Domain\StockMarket.Domain.csproj", "{33EEE4D4-11F3-446A-8365-A818440923A6}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +17,10 @@ Global
 		{AE2EE3EA-1AE3-4199-A84A-0D541AEE6273}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{AE2EE3EA-1AE3-4199-A84A-0D541AEE6273}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{AE2EE3EA-1AE3-4199-A84A-0D541AEE6273}.Release|Any CPU.Build.0 = Release|Any CPU
+		{33EEE4D4-11F3-446A-8365-A818440923A6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{33EEE4D4-11F3-446A-8365-A818440923A6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{33EEE4D4-11F3-446A-8365-A818440923A6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{33EEE4D4-11F3-446A-8365-A818440923A6}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
