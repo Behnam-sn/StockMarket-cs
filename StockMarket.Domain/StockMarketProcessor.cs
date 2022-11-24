@@ -3,6 +3,8 @@
     public class StockMarketProcessor
     {
         private MarketState state;
+        private PriorityQueue<Order, Order> buyOrders;
+        private PriorityQueue<Order, Order> sellOrders;
         public StockMarketProcessor()
         {
         }
