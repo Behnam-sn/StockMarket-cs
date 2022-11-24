@@ -9,6 +9,7 @@ namespace StockMarket.Tests
         {
             // Arrange
             var sut = new StockMarketProcessor();
+            sut.Open();
             // Act
             // Assert
         }
