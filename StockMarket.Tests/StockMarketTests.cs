@@ -11,7 +11,7 @@ namespace StockMarket.Tests
             var sut = new StockMarketProcessor();
             sut.Open();
             // Act
-            sut.EnqueueOrder();
+            sut.EnqueueOrder(TradeSide.Buy, 1500M, 1M);
             // Assert
         }
     }

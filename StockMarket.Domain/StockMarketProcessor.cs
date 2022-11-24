@@ -12,7 +12,7 @@
             state = MarketState.Open;
         }
 
-        public void EnqueueOrder()
+        public void EnqueueOrder(TradeSide side, decimal price, decimal quantity)
         {
             throw new NotImplementedException();
         }
