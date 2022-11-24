@@ -1,28 +1,35 @@
 ﻿namespace StockMarket.Domain
 {
-    public class MaxComparer : IComparer<Order>
+    public abstract class BaseComparer : IComparer<Order>
     {
         public int Compare(Order? x, Order? y)
         {
-            if (y.Price > x.Price) return 1;
-            if (y.Price < x.Price) return -1;
+            var result = SpecificCompare(x, y);
+            if (result != 0) return result;
 
             if (y.Id < x.Id) return 1;
             if (y.Id > x.Id) return -1;
 
             return 0;
         }
+
+        protected abstract int SpecificCompare(Order x, Order y);
     }
-    public class MinComparer : IComparer<Order>
+    public class MaxComparer : BaseComparer
     {
-        public int Compare(Order? x, Order? y)
+        protected override int SpecificCompare(Order x, Order y)
+        {
+            if (y.Price > x.Price) return 1;
+            if (y.Price < x.Price) return -1;
+            return 0;
+        }
+    }
+    public class MinComparer : BaseComparer
+    {
+        protected override int SpecificCompare(Order x, Order y)
         {
             if (y.Price < x.Price) return 1;
             if (y.Price > x.Price) return -1;
-
-            if (y.Id < x.Id) return 1;
-            if (y.Id > x.Id) return -1;
-
             return 0;
         }
     }
