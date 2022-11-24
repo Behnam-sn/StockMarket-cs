@@ -7,6 +7,8 @@
         private PriorityQueue<Order, Order> sellOrders;
         public StockMarketProcessor()
         {
+            buyOrders = new PriorityQueue<Order, Order>();
+            sellOrders = new PriorityQueue<Order, Order>();
         }
 
         public void Open()
