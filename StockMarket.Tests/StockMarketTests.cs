@@ -1,6 +1,6 @@
 namespace StockMarket.Tests
 {
-    public class UnitTest1
+    public class StockMarketTests
     {
         [Fact]
         public void Test1()
