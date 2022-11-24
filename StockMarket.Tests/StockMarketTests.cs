@@ -11,6 +11,7 @@ namespace StockMarket.Tests
             var sut = new StockMarketProcessor();
             sut.Open();
             // Act
+            sut.EnqueueOrder();
             // Assert
         }
     }

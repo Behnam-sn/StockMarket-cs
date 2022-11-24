@@ -11,5 +11,10 @@
         {
             state = MarketState.Open;
         }
+
+        public void EnqueueOrder()
+        {
+            throw new NotImplementedException();
+        }
     }
 }
