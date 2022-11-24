@@ -1,3 +1,5 @@
+using StockMarket.Domain;
+
 namespace StockMarket.Tests
 {
     public class StockMarketTests
@@ -6,6 +8,7 @@ namespace StockMarket.Tests
         public void EnqueueOrderShouldProcessSellOrderWhenBuyOrderIsAlreadyEnqueuedTest()
         {
             // Arrange
+            var sut = new StockMarketProcessor();
             // Act
             // Assert
         }
