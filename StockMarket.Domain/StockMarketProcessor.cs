@@ -37,20 +37,12 @@
                 quantity: quantity
                 );
 
-            while ((sellOrders.Count > 0) && (order.Quantity > 0) && (sellOrders.Peek().Price <= order.Price))
-            {
-                var sellOrder = sellOrders.Peek();
-                makeTrade(
-                    sellOrder: sellOrder,
-                    buyOrder: order
-                    );
-
-                if (sellOrder.Quantity == 0) sellOrders.Dequeue();
-            }
-
-            if (order.Quantity > 0) buyOrders.Enqueue(order, order);
-
-            return order.Id;
+            return matchOrder(
+                order: order,
+                orders: buyOrders,
+                matchingOrders: sellOrders,
+                comparePriceDelegate: (decimal price1, decimal price2) => price1 <= price2
+                );
         }
         private long processSellOrder(TradeSide side, decimal price, decimal quantity)
         {
@@ -62,18 +54,23 @@
                 quantity: quantity
                 );
 
-            while ((buyOrders.Count > 0) && (order.Quantity > 0) && (buyOrders.Peek().Price >= order.Price))
+            return matchOrder(
+                order: order,
+                orders: sellOrders,
+                matchingOrders: buyOrders,
+                comparePriceDelegate: (decimal price1, decimal price2) => price1 >= price2
+                );
+        }
+        private long matchOrder(Order order, PriorityQueue<Order, Order> orders, PriorityQueue<Order, Order> matchingOrders, Func<decimal, decimal, bool> comparePriceDelegate)
+        {
+            while ((matchingOrders.Count > 0) && (order.Quantity > 0) && comparePriceDelegate(matchingOrders.Peek().Price, order.Price))
             {
-                var buyOrder = buyOrders.Peek();
-                makeTrade(
-                    sellOrder: order,
-                    buyOrder: buyOrder
-                    );
-
-                if (buyOrder.Quantity == 0) buyOrders.Dequeue();
+                var peekedOrder = matchingOrders.Peek();
+                makeTrade(peekedOrder, order);
+                if (peekedOrder.Quantity == 0) matchingOrders.Dequeue();
             }
 
-            if (order.Quantity > 0) sellOrders.Enqueue(order, order);
+            if (order.Quantity > 0) orders.Enqueue(order, order);
 
             return order.Id;
         }
