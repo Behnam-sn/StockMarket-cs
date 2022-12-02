@@ -9,8 +9,10 @@
         private PriorityQueue<Order, Order> buyOrders;
         private PriorityQueue<Order, Order> sellOrders;
 
-        public StockMarketProcessor()
+        public StockMarketProcessor(long lastOrderNumber = 0, long lastTradeNumber = 0)
         {
+            this.lastOrderNumber = lastOrderNumber;
+            this.lastTradeNumber = lastOrderNumber;
             trades = new List<Trade>();
             buyOrders = new PriorityQueue<Order, Order>(new MaxComparer());
             sellOrders = new PriorityQueue<Order, Order>(new MinComparer());
