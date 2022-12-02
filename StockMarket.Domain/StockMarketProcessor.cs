@@ -16,6 +16,23 @@
         }
         public void EnqueueOrder(TradeSide side, decimal price, decimal quantity)
         {
+            if (side == TradeSide.Buy)
+            {
+                processBuyOrder(side, price, quantity);
+            }
+            else
+            {
+                processSellOrder(side, price, quantity);
+            }
+        }
+
+        private void processBuyOrder(TradeSide side, decimal price, decimal quantity)
+        {
+            throw new NotImplementedException();
+        }
+
+        private void processSellOrder(TradeSide side, decimal price, decimal quantity)
+        {
             throw new NotImplementedException();
         }
     }
