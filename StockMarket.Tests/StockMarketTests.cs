@@ -14,6 +14,7 @@ namespace StockMarket.Tests
             sut.EnqueueOrder(TradeSide.Buy, 1500M, 1M);
             sut.EnqueueOrder(TradeSide.Sell, 1400M, 2M);
             // Assert
+            Assert.Equal(1, sut.Trades.Count());
         }
     }
 }
