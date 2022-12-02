@@ -3,6 +3,7 @@
     public class StockMarketProcessor
     {
         private MarketState state;
+        private long lastOrderNumber;
         private PriorityQueue<Order, Order> buyOrders;
         private PriorityQueue<Order, Order> sellOrders;
         public StockMarketProcessor()
@@ -28,7 +29,14 @@
 
         private void processBuyOrder(TradeSide side, decimal price, decimal quantity)
         {
-            throw new NotImplementedException();
+            Interlocked.Increment(ref lastOrderNumber);
+            var order = new Order(
+                id: lastOrderNumber,
+                side: side,
+                price: price,
+                quantity: quantity
+                );
+            buyOrders.Enqueue(order, order);
         }
 
         private void processSellOrder(TradeSide side, decimal price, decimal quantity)
