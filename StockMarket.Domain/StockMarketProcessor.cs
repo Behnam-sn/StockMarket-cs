@@ -24,18 +24,11 @@
         }
         public long EnqueueOrder(TradeSide side, decimal price, decimal quantity)
         {
-            Interlocked.Increment(ref lastOrderNumber);
-            var order = new Order(
-                id: lastOrderNumber,
-                side: side,
-                price: price,
-                quantity: quantity
-                );
 
             if (side == TradeSide.Buy)
             {
                 return matchOrder(
-                    order: order,
+                    order: makeOrder(side, price, quantity),
                     orders: buyOrders,
                     matchingOrders: sellOrders,
                     comparePriceDelegate: (decimal price1, decimal price2) => price1 <= price2
@@ -43,11 +36,17 @@
             }
 
             return matchOrder(
-                order: order,
+                order: makeOrder(side, price, quantity),
                 orders: sellOrders,
                 matchingOrders: buyOrders,
                 comparePriceDelegate: (decimal price1, decimal price2) => price1 >= price2
                 );
+        }
+        private Order makeOrder(TradeSide side, decimal price, decimal quantity)
+        {
+            Interlocked.Increment(ref lastOrderNumber);
+            var order = new Order(lastOrderNumber, side, price, quantity);
+            return order;
         }
         private long matchOrder(Order order, PriorityQueue<Order, Order> orders, PriorityQueue<Order, Order> matchingOrders, Func<decimal, decimal, bool> comparePriceDelegate)
         {
