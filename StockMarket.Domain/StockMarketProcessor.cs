@@ -24,11 +24,6 @@
         }
         public long EnqueueOrder(TradeSide side, decimal price, decimal quantity)
         {
-            if (side == TradeSide.Buy) return processBuyOrder(side, price, quantity);
-            return processSellOrder(side, price, quantity);
-        }
-        private long processBuyOrder(TradeSide side, decimal price, decimal quantity)
-        {
             Interlocked.Increment(ref lastOrderNumber);
             var order = new Order(
                 id: lastOrderNumber,
@@ -37,22 +32,15 @@
                 quantity: quantity
                 );
 
-            return matchOrder(
-                order: order,
-                orders: buyOrders,
-                matchingOrders: sellOrders,
-                comparePriceDelegate: (decimal price1, decimal price2) => price1 <= price2
-                );
-        }
-        private long processSellOrder(TradeSide side, decimal price, decimal quantity)
-        {
-            Interlocked.Increment(ref lastOrderNumber);
-            var order = new Order(
-                id: lastOrderNumber,
-                side: side,
-                price: price,
-                quantity: quantity
-                );
+            if (side == TradeSide.Buy)
+            {
+                return matchOrder(
+                    order: order,
+                    orders: buyOrders,
+                    matchingOrders: sellOrders,
+                    comparePriceDelegate: (decimal price1, decimal price2) => price1 <= price2
+                    );
+            }
 
             return matchOrder(
                 order: order,
