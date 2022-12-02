@@ -4,11 +4,14 @@
     {
         private MarketState state;
         private long lastOrderNumber;
+        private long lastTradeNumber;
+        private List<Trade> trades;
         private PriorityQueue<Order, Order> buyOrders;
         private PriorityQueue<Order, Order> sellOrders;
 
         public StockMarketProcessor()
         {
+            trades = new List<Trade>();
             buyOrders = new PriorityQueue<Order, Order>(new MaxComparer());
             sellOrders = new PriorityQueue<Order, Order>(new MinComparer());
         }
@@ -58,9 +61,21 @@
 
             if (order.Quantity > 0) sellOrders.Enqueue(order, order);
         }
-        private void makeTrade(Order order, Order buyOrder)
+        private void makeTrade(Order sellOrder, Order buyOrder)
         {
-            throw new NotImplementedException();
+            Interlocked.Increment(ref lastTradeNumber);
+
+            var minQuantity = Math.Min(sellOrder.Quantity, buyOrder.Quantity);
+            trades.Add(new Trade(
+                id: lastTradeNumber,
+                sellOrderId: sellOrder.Id,
+                buyOrderId: buyOrder.Id,
+                price: sellOrder.Price,
+                quantity: minQuantity
+                ));
+
+            sellOrder.DecreaseQuantity(minQuantity);
+            buyOrder.DecreaseQuantity(minQuantity);
         }
     }
 }
