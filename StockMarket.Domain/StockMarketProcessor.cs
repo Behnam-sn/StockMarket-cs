@@ -22,18 +22,12 @@
         {
             state = MarketState.Open;
         }
-        public void EnqueueOrder(TradeSide side, decimal price, decimal quantity)
+        public long EnqueueOrder(TradeSide side, decimal price, decimal quantity)
         {
-            if (side == TradeSide.Buy)
-            {
-                processBuyOrder(side, price, quantity);
-            }
-            else
-            {
-                processSellOrder(side, price, quantity);
-            }
+            if (side == TradeSide.Buy) return processBuyOrder(side, price, quantity);
+            return processSellOrder(side, price, quantity);
         }
-        private void processBuyOrder(TradeSide side, decimal price, decimal quantity)
+        private long processBuyOrder(TradeSide side, decimal price, decimal quantity)
         {
             Interlocked.Increment(ref lastOrderNumber);
             var order = new Order(
@@ -43,8 +37,10 @@
                 quantity: quantity
                 );
             buyOrders.Enqueue(order, order);
+
+            return order.Id;
         }
-        private void processSellOrder(TradeSide side, decimal price, decimal quantity)
+        private long processSellOrder(TradeSide side, decimal price, decimal quantity)
         {
             Interlocked.Increment(ref lastOrderNumber);
             var order = new Order(
@@ -63,6 +59,8 @@
             }
 
             if (order.Quantity > 0) sellOrders.Enqueue(order, order);
+
+            return order.Id;
         }
         private void makeTrade(Order sellOrder, Order buyOrder)
         {
