@@ -74,21 +74,28 @@
 
             return order.Id;
         }
-        private void makeTrade(Order sellOrder, Order buyOrder)
+        private void makeTrade(Order order1, Order order2)
         {
+            var matchingOrders = findOrders(order1, order2);
+            var minQuantity = Math.Min(matchingOrders.SellOrder.Quantity, matchingOrders.BuyOrder.Quantity);
             Interlocked.Increment(ref lastTradeNumber);
 
-            var minQuantity = Math.Min(sellOrder.Quantity, buyOrder.Quantity);
             trades.Add(new Trade(
                 id: lastTradeNumber,
-                sellOrderId: sellOrder.Id,
-                buyOrderId: buyOrder.Id,
-                price: sellOrder.Price,
+                sellOrderId: matchingOrders.SellOrder.Id,
+                buyOrderId: matchingOrders.BuyOrder.Id,
+                price: matchingOrders.SellOrder.Price,
                 quantity: minQuantity
                 ));
 
-            sellOrder.DecreaseQuantity(minQuantity);
-            buyOrder.DecreaseQuantity(minQuantity);
+            matchingOrders.SellOrder.DecreaseQuantity(minQuantity);
+            matchingOrders.BuyOrder.DecreaseQuantity(minQuantity);
+        }
+        private static (Order SellOrder, Order BuyOrder) findOrders(Order order1, Order order2)
+        {
+            if (order1.Side == TradeSide.Sell) return (SellOrder: order1, BuyOrder: order2);
+            return (SellOrder: order2, BuyOrder: order1);
+
         }
     }
 }
