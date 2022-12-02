@@ -36,7 +36,19 @@
                 price: price,
                 quantity: quantity
                 );
-            buyOrders.Enqueue(order, order);
+
+            while ((sellOrders.Count > 0) && (order.Quantity > 0) && (sellOrders.Peek().Price <= order.Price))
+            {
+                var sellOrder = sellOrders.Peek();
+                makeTrade(
+                    sellOrder: sellOrder,
+                    buyOrder: order
+                    );
+
+                if (sellOrder.Quantity == 0) sellOrders.Dequeue();
+            }
+
+            if (order.Quantity > 0) buyOrders.Enqueue(order, order);
 
             return order.Id;
         }
@@ -53,7 +65,10 @@
             while ((buyOrders.Count > 0) && (order.Quantity > 0) && (buyOrders.Peek().Price >= order.Price))
             {
                 var buyOrder = buyOrders.Peek();
-                makeTrade(order, buyOrder);
+                makeTrade(
+                    sellOrder: order,
+                    buyOrder: buyOrder
+                    );
 
                 if (buyOrder.Quantity == 0) buyOrders.Dequeue();
             }
