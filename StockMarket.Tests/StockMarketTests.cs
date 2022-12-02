@@ -43,5 +43,32 @@ namespace StockMarket.Tests
                 Quantity = 1M
             });
         }
+        [Fact]
+        public void EnqueueOrderShouldProcessSellOrderWhenMultipleBuyOrdersAreAlreadyEnqueuedTest()
+        {
+            //Arrange
+            var sut = new StockMarketProcessor();
+            sut.Open();
+            //Act
+            var buyOrderId1 = sut.EnqueueOrder(TradeSide.Buy, 1500M, 1M);
+            var buyOrderId2 = sut.EnqueueOrder(TradeSide.Buy, 1450M, 1M);
+            var sellOrderId = sut.EnqueueOrder(TradeSide.Sell, 1400M, 2M);
+            //Assert
+            Assert.Equal(2, sut.Trades.Count());
+            sut.Trades.First().Should().BeEquivalentTo(new
+            {
+                BuyOrderId = buyOrderId1,
+                SellOrderId = sellOrderId,
+                Price = 1400M,
+                Quantity = 1M
+            });
+            sut.Trades.Skip(1).First().Should().BeEquivalentTo(new
+            {
+                BuyOrderId = buyOrderId2,
+                SellOrderId = sellOrderId,
+                Price = 1400M,
+                Quantity = 1M
+            });
+        }
     }
 }
