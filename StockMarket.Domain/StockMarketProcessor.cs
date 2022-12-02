@@ -6,6 +6,7 @@
         private long lastOrderNumber;
         private PriorityQueue<Order, Order> buyOrders;
         private PriorityQueue<Order, Order> sellOrders;
+
         public StockMarketProcessor()
         {
             buyOrders = new PriorityQueue<Order, Order>(new MaxComparer());
@@ -26,7 +27,6 @@
                 processSellOrder(side, price, quantity);
             }
         }
-
         private void processBuyOrder(TradeSide side, decimal price, decimal quantity)
         {
             Interlocked.Increment(ref lastOrderNumber);
@@ -38,8 +38,27 @@
                 );
             buyOrders.Enqueue(order, order);
         }
-
         private void processSellOrder(TradeSide side, decimal price, decimal quantity)
+        {
+            Interlocked.Increment(ref lastOrderNumber);
+            var order = new Order(
+                id: lastOrderNumber,
+                side: side,
+                price: price,
+                quantity: quantity
+                );
+
+            while ((buyOrders.Count > 0) && (order.Quantity > 0) && (buyOrders.Peek().Price >= order.Price))
+            {
+                var buyOrder = buyOrders.Peek();
+                makeTrade(order, buyOrder);
+
+                if (buyOrder.Quantity == 0) buyOrders.Dequeue();
+            }
+
+            if (order.Quantity > 0) sellOrders.Enqueue(order, order);
+        }
+        private void makeTrade(Order order, Order buyOrder)
         {
             throw new NotImplementedException();
         }
