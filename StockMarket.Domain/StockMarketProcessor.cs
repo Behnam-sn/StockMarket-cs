@@ -2,7 +2,7 @@
 {
     public class StockMarketProcessor
     {
-        private MarketState state;
+        private MarketState stateCode;
         private long lastOrderNumber;
         private long lastTradeNumber;
         private List<Trade> trades;
@@ -20,7 +20,7 @@
         }
         public void Open()
         {
-            state = MarketState.Open;
+            stateCode = MarketState.Open;
         }
         public long EnqueueOrder(TradeSide side, decimal price, decimal quantity)
         {
