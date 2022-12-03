@@ -6,6 +6,7 @@ namespace StockMarket.Domain
         public TradeSide Side { get; }
         public decimal Price { get; }
         public decimal Quantity { get; internal set; }
+        public bool IsCanceled { get; private set; }
 
         internal Order(long id, TradeSide side, decimal price, decimal quantity)
         {
@@ -17,6 +18,10 @@ namespace StockMarket.Domain
         internal void DecreaseQuantity(decimal minQuantity)
         {
             Quantity -= minQuantity;
+        }
+        internal void Cancel()
+        {
+            IsCanceled = true;
         }
     }
 }

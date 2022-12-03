@@ -20,5 +20,9 @@
         {
             throw new NotImplementedException();
         }
+        public virtual void Cancel(long orderId)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

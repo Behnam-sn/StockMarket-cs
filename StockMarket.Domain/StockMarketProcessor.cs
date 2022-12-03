@@ -7,6 +7,7 @@
         private long lastOrderNumber;
         private long lastTradeNumber;
         private List<Trade> trades;
+        private List<Order> allOrders;
         private PriorityQueue<Order, Order> buyOrders;
         private PriorityQueue<Order, Order> sellOrders;
         public IEnumerable<Trade> Trades => trades;
@@ -16,6 +17,7 @@
             state = new CloseState(this);
             this.lastOrderNumber = lastOrderNumber;
             this.lastTradeNumber = lastOrderNumber;
+            allOrders = new List<Order>();
             trades = new List<Trade>();
             buyOrders = new PriorityQueue<Order, Order>(new MaxComparer());
             sellOrders = new PriorityQueue<Order, Order>(new MinComparer());
@@ -65,6 +67,7 @@
         {
             Interlocked.Increment(ref lastOrderNumber);
             var order = new Order(lastOrderNumber, side, price, quantity);
+            allOrders.Add(order);
             return order;
         }
         private long matchOrder(Order order, PriorityQueue<Order, Order> orders, PriorityQueue<Order, Order> matchingOrders, Func<decimal, decimal, bool> comparePriceDelegate)
@@ -72,6 +75,13 @@
             while ((matchingOrders.Count > 0) && (order.Quantity > 0) && comparePriceDelegate(matchingOrders.Peek().Price, order.Price))
             {
                 var peekedOrder = matchingOrders.Peek();
+
+                if (peekedOrder.IsCanceled)
+                {
+                    matchingOrders.Dequeue();
+                    continue;
+                }
+
                 makeTrade(peekedOrder, order);
                 if (peekedOrder.Quantity == 0) matchingOrders.Dequeue();
             }
@@ -102,6 +112,14 @@
             if (order1.Side == TradeSide.Sell) return (SellOrder: order1, BuyOrder: order2);
             return (SellOrder: order2, BuyOrder: order1);
 
+        }
+        public void Cancel(long orderId)
+        {
+            state.Cancel(orderId);
+        }
+        internal void cancel(long orderId)
+        {
+            allOrders.Single(order => order.Id == orderId).Cancel();
         }
     }
 }

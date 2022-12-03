@@ -16,5 +16,9 @@ namespace StockMarket.Domain
         {
             return stockMarket.enqueueOrder(side, price, quantity);
         }
+        public override void Cancel(long orderId)
+        {
+            stockMarket.cancel(orderId);
+        }
     }
 }
