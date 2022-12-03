@@ -25,15 +25,18 @@
         }
         public long EnqueueOrder(TradeSide side, decimal price, decimal quantity)
         {
-
+            return state.EnqueueOrder(side, price, quantity);
+        }
+        internal long enqueueOrder(TradeSide side, decimal price, decimal quantity)
+        {
             if (side == TradeSide.Buy)
             {
                 return matchOrder(
-                    order: makeOrder(side, price, quantity),
-                    orders: buyOrders,
-                    matchingOrders: sellOrders,
-                    comparePriceDelegate: (decimal price1, decimal price2) => price1 <= price2
-                    );
+                order: makeOrder(side, price, quantity),
+                orders: buyOrders,
+                matchingOrders: sellOrders,
+                comparePriceDelegate: (decimal price1, decimal price2) => price1 <= price2
+                );
             }
 
             return matchOrder(
