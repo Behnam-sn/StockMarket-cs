@@ -97,5 +97,15 @@ namespace StockMarket.Tests
                 Quantity = 1M
             });
         }
+        [Fact]
+        public void EnqueueOrderShouldNotWorkWhenStockMarketIsClosedTest()
+        {
+            //Arrange
+            var sut = new StockMarketProcessor();
+            //Act
+            Action act = () => sut.EnqueueOrder(TradeSide.Buy, 1500M, 1M);
+            //Assert
+            Assert.Throws(typeof(NotImplementedException), act);
+        }
     }
 }
