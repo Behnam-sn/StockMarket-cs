@@ -21,7 +21,12 @@
         }
         public void Open()
         {
-            stateCode = MarketState.Open;
+            state.Open();
+        }
+        internal void open()
+        {
+            this.stateCode = MarketState.Open;
+            state = new OpenState(this);
         }
         public void Close()
         {
@@ -30,6 +35,7 @@
         internal void close()
         {
             this.stateCode = MarketState.Closed;
+            state = new CloseState(this);
         }
         public long EnqueueOrder(TradeSide side, decimal price, decimal quantity)
         {
