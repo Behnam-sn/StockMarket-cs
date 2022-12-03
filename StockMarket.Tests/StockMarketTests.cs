@@ -120,5 +120,25 @@ namespace StockMarket.Tests
             //Assert
             Assert.Equal(0, sut.Trades.Count());
         }
+        [Fact]
+        public void ModifyShouldUpdateOrderTest()
+        {
+            //Arrange
+            var sut = new StockMarketProcessor();
+            sut.Open();
+            var buyOrderId = sut.EnqueueOrder(TradeSide.Buy, 1500M, 1M);
+            var sellOrderId = sut.EnqueueOrder(TradeSide.Sell, 1600M, 2M);
+            //Act
+            var modifiedSellOrderId = sut.Modify(sellOrderId, TradeSide.Sell, 1400M, 1M);
+            //Assert
+            Assert.Equal(1, sut.Trades.Count());
+            sut.Trades.First().Should().BeEquivalentTo(new
+            {
+                BuyOrderId = buyOrderId,
+                SellOrderId = modifiedSellOrderId,
+                Price = 1400M,
+                Quantity = 1M
+            });
+        }
     }
 }
