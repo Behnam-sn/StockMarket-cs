@@ -13,6 +13,7 @@
 
         public StockMarketProcessor(long lastOrderNumber = 0, long lastTradeNumber = 0)
         {
+            state = new CloseState(this);
             this.lastOrderNumber = lastOrderNumber;
             this.lastTradeNumber = lastOrderNumber;
             trades = new List<Trade>();
