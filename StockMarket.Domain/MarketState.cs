@@ -2,7 +2,7 @@ namespace StockMarket.Domain
 {
     public enum MarketState
     {
-        Close,
+        Closed,
         PreOpening,
         Open
     }
