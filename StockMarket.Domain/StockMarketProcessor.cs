@@ -1,8 +1,9 @@
 ﻿namespace StockMarket.Domain
 {
-    public class StockMarketProcessor
+    public class StockMarketProcessor : IStockMarketProcessor
     {
         private MarketState stateCode;
+        private IStockMarketProcessor state;
         private long lastOrderNumber;
         private long lastTradeNumber;
         private List<Trade> trades;
