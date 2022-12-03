@@ -8,6 +8,10 @@ namespace StockMarket.Domain
         public override void Open()
         {
         }
+        public override void Close()
+        {
+            stockMarket.close();
+        }
         public override long EnqueueOrder(TradeSide side, decimal price, decimal quantity)
         {
             return stockMarket.enqueueOrder(side, price, quantity);

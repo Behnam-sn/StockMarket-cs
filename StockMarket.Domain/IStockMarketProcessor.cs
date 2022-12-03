@@ -3,6 +3,7 @@
     public interface IStockMarketProcessor
     {
         void Open();
+        void Close();
         long EnqueueOrder(TradeSide side, decimal price, decimal quantity);
     }
 }

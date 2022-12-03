@@ -12,6 +12,10 @@
         {
             throw new NotImplementedException();
         }
+        public virtual void Close()
+        {
+            throw new NotImplementedException();
+        }
         public virtual long EnqueueOrder(TradeSide side, decimal price, decimal quantity)
         {
             throw new NotImplementedException();

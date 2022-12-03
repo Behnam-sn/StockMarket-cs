@@ -23,6 +23,14 @@
         {
             stateCode = MarketState.Open;
         }
+        public void Close()
+        {
+            state.Close();
+        }
+        internal void close()
+        {
+            this.stateCode = MarketState.Closed;
+        }
         public long EnqueueOrder(TradeSide side, decimal price, decimal quantity)
         {
             return state.EnqueueOrder(side, price, quantity);
