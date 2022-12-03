@@ -107,5 +107,18 @@ namespace StockMarket.Tests
             //Assert
             Assert.Throws(typeof(NotImplementedException), act);
         }
+        [Fact]
+        public void CancelShouldDequeueTheOrderTest()
+        {
+            //Arrange
+            var sut = new StockMarketProcessor();
+            sut.Open();
+            var buyOrderId = sut.EnqueueOrder(TradeSide.Buy, 1500M, 1M);
+            //Act
+            sut.Cancel(buyOrderId);
+            sut.EnqueueOrder(TradeSide.Sell, 1400M, 2M);
+            //Assert
+            Assert.Equal(0, sut.Trades.Count());
+        }
     }
 }
