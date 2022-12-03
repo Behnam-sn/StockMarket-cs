@@ -121,5 +121,14 @@
         {
             allOrders.Single(order => order.Id == orderId).Cancel();
         }
+        public long Modify(long orderId, TradeSide side, decimal price, decimal quantity)
+        {
+            return state.Modify(orderId, side, price, quantity);
+        }
+        internal long modify(long orderId, TradeSide side, decimal price, decimal quantity)
+        {
+            state.Cancel(orderId);
+            return state.EnqueueOrder(side, price, quantity);
+        }
     }
 }

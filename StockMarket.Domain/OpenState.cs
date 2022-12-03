@@ -20,5 +20,9 @@ namespace StockMarket.Domain
         {
             stockMarket.cancel(orderId);
         }
+        public override long Modify(long orderId, TradeSide side, decimal price, decimal quantity)
+        {
+            return stockMarket.modify(orderId, side, price, quantity);
+        }
     }
 }

@@ -24,5 +24,9 @@
         {
             throw new NotImplementedException();
         }
+        public virtual long Modify(long orderId, TradeSide side, decimal price, decimal quantity)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
