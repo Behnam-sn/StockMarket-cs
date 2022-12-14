@@ -11,6 +11,7 @@
         private PriorityQueue<Order, Order> buyOrders;
         private PriorityQueue<Order, Order> sellOrders;
         public IEnumerable<Trade> Trades => trades;
+        public IEnumerable<Order> Orders => allOrders;
 
         public StockMarketProcessor(long lastOrderNumber = 0, long lastTradeNumber = 0)
         {
