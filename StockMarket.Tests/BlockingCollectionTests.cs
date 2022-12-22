@@ -104,22 +104,25 @@ namespace StockMarket.Tests
                     orders.Add(data);
                 });
             }
+
             for (int i = 5; i < 10; i++)
             {
                 tasks[i] = Task.Run(async () =>
                 {
                     var item = new CancelCommand(stockMarket, orders.Take());
-                    Interlocked.Increment(ref j);
                     sut.Add(item);
 
+                    Interlocked.Increment(ref j);
                     if (j == 9)
                     {
                         sut.CompleteAdding();
                         orders.CompleteAdding();
                     }
+
                     var data = await item.WaitForCompletion();
                 });
             }
+
             tasks[10] = Task.Run(() =>
             {
                 while (!sut.IsAddingCompleted || sut.Count > 0)
